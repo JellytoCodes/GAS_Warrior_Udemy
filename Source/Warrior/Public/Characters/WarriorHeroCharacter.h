@@ -4,6 +4,7 @@
 #include "Characters/WarriorCharacterBase.h"
 #include "WarriorHeroCharacter.generated.h"
 
+class UHeroCombatComponent;
 struct FInputActionValue;
 
 class UDataAsset_InputConfig;
@@ -18,6 +19,8 @@ class WARRIOR_API AWarriorHeroCharacter : public AWarriorCharacterBase
 public :
 	AWarriorHeroCharacter();
 
+	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const { return HeroCombatComponent; }
+
 protected :
 	virtual void BeginPlay() override;
 	virtual void PossessedBy(AController* NewController) override;
@@ -30,6 +33,9 @@ private :
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UHeroCombatComponent> HeroCombatComponent;
 #pragma endregion
 
 #pragma region Inputs
