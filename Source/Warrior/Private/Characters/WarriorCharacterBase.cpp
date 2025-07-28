@@ -1,0 +1,31 @@
+#include "Characters/WarriorCharacterBase.h"
+#include "AbilitySystem/WarriorAbilitySystemComponent.h"
+#include "AbilitySystem/WarriorAttributeSet.h"
+
+AWarriorCharacterBase::AWarriorCharacterBase()
+{
+	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
+
+	GetMesh()->bReceivesDecals = false;
+
+	WarriorAbilitySystemComponent = CreateDefaultSubobject<UWarriorAbilitySystemComponent>("WarriorAbilitySystemComponent");
+
+	WarriorAttributeSet = CreateDefaultSubobject<UWarriorAttributeSet>("WarriorAttributeSet");
+}
+
+UAbilitySystemComponent* AWarriorCharacterBase::GetAbilitySystemComponent() const
+{
+	return GetWarriorAbilitySystemComponent();
+}
+
+void AWarriorCharacterBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (WarriorAbilitySystemComponent)
+	{
+		WarriorAbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
+}
+
