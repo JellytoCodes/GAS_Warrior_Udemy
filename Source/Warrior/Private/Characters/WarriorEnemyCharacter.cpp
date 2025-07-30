@@ -3,7 +3,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/AssetManager.h"
 #include "DataAssets/StartUpData/DataAsset_StartUpDataBase.h"
-#include "WarriorDebugHelper.h"
 
 AWarriorEnemyCharacter::AWarriorEnemyCharacter()
 {
@@ -22,6 +21,11 @@ AWarriorEnemyCharacter::AWarriorEnemyCharacter()
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>("EnemyCombatComponent");
 }
 
+UPawnCombatComponent* AWarriorEnemyCharacter::GetPawnCombatComponent() const
+{
+	return EnemyCombatComponent;
+}
+
 void AWarriorEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -33,15 +37,12 @@ void AWarriorEnemyCharacter::InitEnemyStartUpData()
 {
 	if (CharacterStartUpData.IsNull()) return;
 
-	UAssetManager::GetStreamableManager().RequestAsyncLoad(
-		CharacterStartUpData.ToSoftObjectPath(),
+	UAssetManager::GetStreamableManager().RequestAsyncLoad(CharacterStartUpData.ToSoftObjectPath(),
 		FStreamableDelegate::CreateLambda([this]()
 		{
 			if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.Get())
 			{
 				LoadedData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent);
-				Debug::Print(TEXT("Enemy Start Up Data Loaded"));
 			}
-		})
-	);
+		}));
 }
