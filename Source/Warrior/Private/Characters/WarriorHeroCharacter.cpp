@@ -8,7 +8,7 @@
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Components/Input/WarriorEnhancedInputComponent.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
-#include "DataAssets/StartUpData/DataAsset_HeroStartUpData.h"
+#include "DataAssets/StartUpData/DataAsset_StartUpDataBase.h"
 #include "Components/Combat/HeroCombatComponent.h"
 
 AWarriorHeroCharacter::AWarriorHeroCharacter()
@@ -50,7 +50,7 @@ void AWarriorHeroCharacter::PossessedBy(AController* NewController)
 
 	if (!CharacterStartUpData.IsNull())
 	{
-		if (UDataAsset_HeroStartUpData* LoadedData = CharacterStartUpData.LoadSynchronous())
+		if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.LoadSynchronous())
 		{
 			LoadedData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent);
 		}

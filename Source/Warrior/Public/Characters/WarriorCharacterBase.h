@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "WarriorCharacterBase.generated.h"
 
+class UDataAsset_StartUpDataBase;
 class UDataAsset_HeroStartUpData;
 class UWarriorAbilitySystemComponent;
 class UWarriorAttributeSet;
@@ -36,7 +37,7 @@ protected :
 	TObjectPtr<UWarriorAttributeSet> WarriorAttributeSet;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
-	TSoftObjectPtr<UDataAsset_HeroStartUpData>CharacterStartUpData;
+	TSoftObjectPtr<UDataAsset_StartUpDataBase>CharacterStartUpData;
 
 
 };
