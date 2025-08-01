@@ -1,3 +1,4 @@
+
 #include "Characters/WarriorHeroCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
@@ -45,6 +46,11 @@ UPawnCombatComponent* AWarriorHeroCharacter::GetPawnCombatComponent() const
 }
 
 UPawnUIComponent* AWarriorHeroCharacter::GetPawnUIComponent()
+{
+	return HeroUIComponent;
+}
+
+UHeroUIComponent* AWarriorHeroCharacter::GetHeroUIComponent() const
 {
 	return HeroUIComponent;
 }
