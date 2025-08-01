@@ -5,6 +5,7 @@
 #include "Characters/WarriorCharacterBase.h"
 #include "WarriorHeroCharacter.generated.h"
 
+class UHeroUIComponent;
 class UHeroCombatComponent;
 struct FInputActionValue;
 
@@ -20,9 +21,13 @@ class WARRIOR_API AWarriorHeroCharacter : public AWarriorCharacterBase
 public :
 	AWarriorHeroCharacter();
 
-	//~ Begin IPawnCombatInterface Interface
+	//~ Begin IPawnCombatInterface 
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
-	//~ End IPawnCombatInterface Interface
+	//~ End IPawnCombatInterface 
+
+	//~ Begin IPawnUIInterface 
+	virtual UPawnUIComponent* GetPawnUIComponent() override;
+	//~ End IPawnUIInterface 
 
 	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const { return HeroCombatComponent; }
 
@@ -41,6 +46,9 @@ private :
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UHeroCombatComponent> HeroCombatComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UHeroUIComponent> HeroUIComponent;
 #pragma endregion
 
 #pragma region Inputs
