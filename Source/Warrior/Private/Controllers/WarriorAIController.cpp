@@ -27,17 +27,6 @@ AWarriorAIController::AWarriorAIController(const FObjectInitializer& ObjectIniti
 	SetGenericTeamId(FGenericTeamId(1));
 }
 
-ETeamAttitude::Type AWarriorAIController::GetTeamAttitudeTowards(const AActor& Other) const
-{
-	const APawn* PawnToCheck = Cast<const APawn>(&Other);
-	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<const IGenericTeamAgentInterface>(PawnToCheck->GetController());
-	if (OtherTeamAgent && OtherTeamAgent->GetGenericTeamId() != GetGenericTeamId())
-	{
-		return ETeamAttitude::Hostile;
-	}
-	return ETeamAttitude::Friendly;
-}
-
 void AWarriorAIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -60,13 +49,27 @@ void AWarriorAIController::BeginPlay()
 	}
 }
 
+ETeamAttitude::Type AWarriorAIController::GetTeamAttitudeTowards(const AActor& Other) const
+{
+	const APawn* PawnToCheck = Cast<const APawn>(&Other);
+	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<const IGenericTeamAgentInterface>(PawnToCheck->GetController());
+	if (OtherTeamAgent && OtherTeamAgent->GetGenericTeamId() < GetGenericTeamId())
+	{
+		return ETeamAttitude::Hostile;
+	}
+	return ETeamAttitude::Friendly;
+}
+
 void AWarriorAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	if (Stimulus.WasSuccessfullySensed() && Actor)
+	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
 	{
-		if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
+		if (!BlackboardComponent->GetValueAsObject("TargetActor"))
 		{
-			BlackboardComponent->SetValueAsObject("TargetActor", Actor);
+			if (Stimulus.WasSuccessfullySensed() && Actor)
+			{
+				BlackboardComponent->SetValueAsObject("TargetActor", Actor);
+			}
 		}
 	}
 }

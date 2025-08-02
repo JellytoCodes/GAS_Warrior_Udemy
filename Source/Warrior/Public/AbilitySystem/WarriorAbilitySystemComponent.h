@@ -1,5 +1,3 @@
-// All Rights Reserved
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,9 +5,6 @@
 #include "WarriorTypes/WarriorStructTypes.h"
 #include "WarriorAbilitySystemComponent.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class WARRIOR_API UWarriorAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -24,4 +19,7 @@ public :
 
 	UFUNCTION(BlueprintCallable, Category = "Warrior|Ability")
 	void RemovedGrantedHeroWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove);
+
+	UFUNCTION(BlueprintCallable, Category = "Warrior|Ability")
+	bool TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate);
 };
