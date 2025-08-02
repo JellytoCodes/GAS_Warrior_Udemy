@@ -7,6 +7,7 @@
 #include "Interfaces/PawnUIInterface.h"
 #include "WarriorCharacterBase.generated.h"
 
+class UMotionWarpingComponent;
 class UDataAsset_StartUpDataBase;
 class UDataAsset_HeroStartUpData;
 class UWarriorAbilitySystemComponent;
@@ -45,6 +46,9 @@ protected :
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	TObjectPtr<UWarriorAttributeSet> WarriorAttributeSet;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MotinWarping")
+	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
 	TSoftObjectPtr<UDataAsset_StartUpDataBase>CharacterStartUpData;
