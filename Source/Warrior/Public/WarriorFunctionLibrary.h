@@ -38,5 +38,8 @@ public :
 	static bool IsTargetPawnHostile(const APawn* QueryPawn, const APawn* TargetPawn);
 
 	UFUNCTION(BlueprintPure, Category = "Warrior|FunctionLibrary", meta = (CompactNodeTitle = "GetValueAtLevel"))
-	static float GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat, float InLevel = 1.f);
+	static float GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat, const float InLevel = 1.f);
+
+	UFUNCTION(BlueprintPure, Category = "Warrior|FunctionLibrary")
+	static FGameplayTag ComputeHitReactDirectionTag(const AActor* InAttacker, const AActor* InVictim, float& OutAngleDifference);
 };

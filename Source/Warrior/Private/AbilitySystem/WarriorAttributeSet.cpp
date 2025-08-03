@@ -44,7 +44,7 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
 
 		SetCurrentRage(NewCurrentRage);
 
-		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+		if (const UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
 		{
 			HeroUIComponent->OnCurrentRageChanged.Broadcast(GetCurrentRage()/GetMaxRage());
 		}
@@ -59,16 +59,8 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
 
 		SetCurrentHealth(NewCurrentHealth);
 
-		const FString DebugString = FString::Printf(TEXT("Old Health: %.2f, Damage Done : %.2f, NewCurrentHealth : %.2f"),
-		OldHealth,
-		DamageDone,
-		NewCurrentHealth);
-
 		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth()/GetMaxHealth());
 
-		if (GetCurrentHealth() == 0.f)
-		{
-			UWarriorFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), WarriorGameplayTags::Shared_Status_Dead);
-		}
+		if (GetCurrentHealth() == 0.f) UWarriorFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), WarriorGameplayTags::Shared_Status_Dead);
 	}
 }
