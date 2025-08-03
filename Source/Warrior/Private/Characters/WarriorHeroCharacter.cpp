@@ -40,21 +40,6 @@ AWarriorHeroCharacter::AWarriorHeroCharacter()
 	HeroUIComponent = CreateDefaultSubobject<UHeroUIComponent>("HeroUIComponent");
 }
 
-UPawnCombatComponent* AWarriorHeroCharacter::GetPawnCombatComponent() const
-{
-	return HeroCombatComponent;
-}
-
-UPawnUIComponent* AWarriorHeroCharacter::GetPawnUIComponent()
-{
-	return HeroUIComponent;
-}
-
-UHeroUIComponent* AWarriorHeroCharacter::GetHeroUIComponent() const
-{
-	return HeroUIComponent;
-}
-
 void AWarriorHeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -136,4 +121,19 @@ void AWarriorHeroCharacter::Input_AbilityInputPressed(const FGameplayTag InInput
 void AWarriorHeroCharacter::Input_AbilityInputReleased(const FGameplayTag InInputTag)
 {
 	WarriorAbilitySystemComponent->OnAbilityInputReleased(InInputTag);
+}
+
+UPawnCombatComponent* AWarriorHeroCharacter::GetPawnCombatComponent() const
+{
+	return HeroCombatComponent;
+}
+
+UPawnUIComponent* AWarriorHeroCharacter::GetPawnUIComponent()
+{
+	return HeroUIComponent;
+}
+
+UHeroUIComponent* AWarriorHeroCharacter::GetHeroUIComponent() const
+{
+	return HeroUIComponent;
 }

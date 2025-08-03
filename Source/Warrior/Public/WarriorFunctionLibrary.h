@@ -22,7 +22,7 @@ public :
 	static void AddGameplayTagToActorIfNone(AActor* InActor, FGameplayTag TagToAdd);
 
 	UFUNCTION(BlueprintCallable, Category = "Warrior|FunctionLibrary")
-	static void RemoveGameplayFromActorIfFound(AActor* InActor, FGameplayTag TagToRemove);
+	static void RemoveGameplayTagFromActorIfFound(AActor* InActor, FGameplayTag TagToRemove);
 
 	static bool NativeDoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck);
 
@@ -42,4 +42,7 @@ public :
 
 	UFUNCTION(BlueprintPure, Category = "Warrior|FunctionLibrary")
 	static FGameplayTag ComputeHitReactDirectionTag(const AActor* InAttacker, const AActor* InVictim, float& OutAngleDifference);
+
+	UFUNCTION(BlueprintPure, Category = "Warrior|FunctionLibrary")
+	static bool IsValidBlock(const AActor* InAttacker, const AActor* InDefender);
 };
