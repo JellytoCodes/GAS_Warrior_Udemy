@@ -37,7 +37,6 @@ private :
 	void ResetTargetLockMovement();
 	void ResetTargetLockMappingContext();
 
-#pragma region TargetLock
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
 	float TraceDistance = 5000.f;
 
@@ -62,9 +61,6 @@ private :
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
 	TObjectPtr<UInputMappingContext> TargetLockMappingContext;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
-	float TargetLockCameraOffsetDistance = 50.f;
-#pragma endregion
 	UPROPERTY()
 	TArray<AActor*> AvailableActorsToLock;
 
