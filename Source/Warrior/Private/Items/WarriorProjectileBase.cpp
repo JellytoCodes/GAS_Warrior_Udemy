@@ -37,7 +37,7 @@ void AWarriorProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ProjectileDamagePolicy == EProjectileDamagePolicy::OnEndOverlap)
+	if (ProjectileDamagePolicy == EProjectileDamagePolicy::OnBeginOverlap)
 	{
 		ProjectileCollisionBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	}
@@ -62,7 +62,7 @@ void AWarriorProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, 
 	}
 
 	FGameplayEventData Data;
-	Data.Instigator = this;
+	Data.Instigator = GetInstigator();
 	Data.Target = HitPawn;
 
 	if (bIsValidBlock)
@@ -79,16 +79,29 @@ void AWarriorProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, 
 
 void AWarriorProjectileBase::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (OverlappedActors.Contains(OtherActor)) return;
 
+	OverlappedActors.AddUnique(OtherActor);
+
+	if (APawn* HitPawn = Cast<APawn>(OtherActor))
+	{
+		FGameplayEventData Data;
+		Data.Instigator = GetInstigator();
+		Data.Target = HitPawn;
+
+		if (UWarriorFunctionLibrary::IsTargetPawnHostile(GetInstigator(), HitPawn))
+		{
+			HandleApplyProjectileDamage(HitPawn, Data);
+		}
+	}
 }
 
 void AWarriorProjectileBase::HandleApplyProjectileDamage(APawn* InHitPawn, const FGameplayEventData& InData)
 {
 	checkf(ProjectileDamageEffectSpecHandle.IsValid(), TEXT("Forgot to assign a valid spec handle to the projectile : %s"), *GetActorNameOrLabel());
 
-
-	const bool bWasApplied = UWarriorFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(GetInstigator(), InHitPawn, ProjectileDamageEffectSpecHandle);
-	if (bWasApplied)
+	//Was applied
+	if (UWarriorFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(GetInstigator(), InHitPawn, ProjectileDamageEffectSpecHandle))
 	{
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(InHitPawn,WarriorGameplayTags::Shared_Event_HitReact,InData);
 	}
