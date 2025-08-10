@@ -20,3 +20,18 @@ enum class EWarriorSuccessType : uint8
 	Successful,
 	Failed
 };
+
+UENUM()
+enum class EWarriorCountdownActionInput : uint8
+{
+	Start,
+	Cancel
+};
+
+UENUM()
+enum class EWarriorCountdownActionOutput : uint8
+{
+	Updated,
+	Completed,
+	Cancelled
+};
