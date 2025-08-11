@@ -52,6 +52,10 @@ class WARRIOR_API AWarriorSurvivalGameMode : public AWarriorGameModeBase
 {
 	GENERATED_BODY()
 
+public :
+	UFUNCTION(BlueprintCallable)
+	void RegisterSpawnedEnemies(const TArray<AWarriorEnemyCharacter*>& InEnemiesToRegister);
+
 protected :
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -60,8 +64,12 @@ private :
 	void SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState CurrentState);
 	bool HasFinishedAllWaves() const;
 	void PreLoadNextWaveEnemies();
-
 	FWarriorEnemyWaveSpawnerTableRow* GetCurrentWaveSpawnerTableRow() const;
+	int32 TrySpawnWaveEnemies();
+	bool ShouldKeepSpawnEnemies() const;
+
+	UFUNCTION()
+	void OnEnemyDestroyed(AActor* DestroyedActor);
 
 	UPROPERTY()
 	EWarriorSurvivalGameModeState CurrentSurvivalGameModeState;
@@ -79,12 +87,21 @@ private :
 	int32 CurrentWaveCount = 1;
 
 	UPROPERTY()
+	int32 CurrentSpawnedEnemiesCounter = 0;
+
+	UPROPERTY()
+	int32 TotalSpawnedThisWaveCounter = 0;
+
+	UPROPERTY()
+	TArray<AActor*> TargetPointArray;
+
+	UPROPERTY()
 	float TimePassedSinceStart = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
 	float SpawnNewWaveWaitTime = 5.f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
 	float SpawnEnemiesDelayTime = 2.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
