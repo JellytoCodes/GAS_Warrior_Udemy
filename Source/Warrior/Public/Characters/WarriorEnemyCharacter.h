@@ -25,7 +25,7 @@ public :
 	virtual UPawnUIComponent* GetPawnUIComponent() override;
 	virtual UEnemyUIComponent* GetEnemyUIComponent() const override;
 	//~ End IPawnUIInterface 
-
+	
 	FORCEINLINE UEnemyCombatComponent* GetEnemyCombatComponent() const { return EnemyCombatComponent; }
 	FORCEINLINE UBoxComponent* GetLeftHandCollisionBox() const { return LeftHandCollisionBox; }
 	FORCEINLINE UBoxComponent* GetRightHandCollisionBox() const { return RightHandCollisionBox; }
@@ -64,5 +64,5 @@ protected :
 
 private :
 	void InitEnemyStartUpData();
-
+	
 };

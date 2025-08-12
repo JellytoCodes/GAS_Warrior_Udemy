@@ -2,7 +2,7 @@
 #include "WarriorFunctionLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
-#include "WarriorDebugHelper.h"
+#include "WarriorGameInstance.h"
 #include "WarriorGameplayTags.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Interfaces/PawnCombatInterface.h"
@@ -146,5 +146,47 @@ void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float
 			FoundAction->CancelAction();
 		}
 	}
+}
+
+UWarriorGameInstance* UWarriorFunctionLibrary::GetWarriorGameInstance(const UObject* WorldContextObject)
+{
+	if (!GEngine) return nullptr;
+
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		return World->GetGameInstance<UWarriorGameInstance>();
+	}
+
+	return nullptr;
+}
+
+void UWarriorFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, EWarriorInputMode InInputMode)
+{	
+	if (!GEngine) return;
+
+
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		APlayerController* PlayerController = World->GetFirstPlayerController();
+
+		const FInputModeGameOnly GameOnlyMode;
+		const FInputModeUIOnly UIOnlyMode;
+
+		switch (InInputMode)
+		{
+			case EWarriorInputMode::GameOnly :
+				PlayerController->SetInputMode(GameOnlyMode);
+				PlayerController->bShowMouseCursor = false;
+			break;
+
+			case EWarriorInputMode::UIOnly :
+				PlayerController->SetInputMode(UIOnlyMode);
+				PlayerController->bShowMouseCursor = true;
+			break;
+
+			default: break;
+		}
+	}
+	
 }
 
