@@ -1,6 +1,6 @@
 # GameAbilitySystem_ActionRPG
->GAS 기반 고급 액션 RPG 전투 시스템 아키텍처 구현  
->AAA 품질의 C++ 중심 구조 설계, GAS 심화 활용 및 고도화된 전투 연출 학습  
+> GAS 기반 고급 액션 RPG 전투 시스템 아키텍처 구현  
+> AAA 품질의 C++ 중심 구조 설계, GAS 심화 활용 및 고도화된 전투 연출 학습  
 > 강의 : Unreal Engine 5 C++: Advanced Action RPG  
 > Link : https://www.udemy.com/course/unreal-engine-5-advanced-action-rpg/  
 ---
@@ -56,4 +56,5 @@
 <br>
 
 ## 수강 완료
-2025.07.28 ~ 2025.08.17 (예정)
+2025.07.28 ~ 2025.08.13
+![UC-cc27e9ad-ea8c-4cb8-af9b-4529bbc77176](https://github.com/user-attachments/assets/f3b5fd62-580e-40b3-9a95-5e58a452edb5)
