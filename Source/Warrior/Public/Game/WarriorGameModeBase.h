@@ -13,10 +13,12 @@ class WARRIOR_API AWarriorGameModeBase : public AGameModeBase
 public :
 	AWarriorGameModeBase();
 
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
 	FORCEINLINE EWarriorGameDifficulty GetCurrentGameDifficulty() const { return CurrentGameDifficulty; }
 
 protected :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Settings")
-	EWarriorGameDifficulty CurrentGameDifficulty;
+	EWarriorGameDifficulty CurrentGameDifficulty = EWarriorGameDifficulty::Easy;
 
 };

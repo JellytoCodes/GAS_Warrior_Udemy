@@ -24,50 +24,52 @@ void AWarriorSurvivalGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	// TODO : Game Mode State Refactoring
-	if (CurrentSurvivalGameModeState == EWarriorSurvivalGameModeState::WaitSpawnNewWave)
+	switch (CurrentSurvivalGameModeState)
 	{
-		TimePassedSinceStart += DeltaSeconds;
+		case EWarriorSurvivalGameModeState::WaitSpawnNewWave :
+			TimePassedSinceStart += DeltaSeconds;
 
-		if (TimePassedSinceStart >= SpawnNewWaveWaitTime)
-		{
-			TimePassedSinceStart = 0.f;
-			SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState::SpawningNewWave);
-		}
-	}
-
-	if (CurrentSurvivalGameModeState == EWarriorSurvivalGameModeState::SpawningNewWave)
-	{
-		TimePassedSinceStart += DeltaSeconds;
-
-		if (TimePassedSinceStart >= SpawnEnemiesDelayTime)
-		{
-			CurrentSpawnedEnemiesCounter += TrySpawnWaveEnemies();
-			TimePassedSinceStart = 0.f;
-
-			SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState::InProgress);
-		}
-	}
-
-	if (CurrentSurvivalGameModeState == EWarriorSurvivalGameModeState::WaveCompleted)
-	{
-		TimePassedSinceStart += DeltaSeconds;
-		if (TimePassedSinceStart >= WaveCompletedWaitTime)
-		{
-			CurrentWaveCount++;
-
-			if (HasFinishedAllWaves())
-			{
-				SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState::AllWavesDone);
-			}
-			else
+			if (TimePassedSinceStart >= SpawnNewWaveWaitTime)
 			{
 				TimePassedSinceStart = 0.f;
-
-				SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState::WaitSpawnNewWave);
-				PreLoadNextWaveEnemies();
+				SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState::SpawningNewWave);
 			}
-		}
+		break;
+
+		case EWarriorSurvivalGameModeState::SpawningNewWave :
+			TimePassedSinceStart += DeltaSeconds;
+
+			if (TimePassedSinceStart >= SpawnEnemiesDelayTime)
+			{
+				CurrentSpawnedEnemiesCounter += TrySpawnWaveEnemies();
+				TimePassedSinceStart = 0.f;
+
+				SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState::InProgress);
+			}
+		break;
+
+		case EWarriorSurvivalGameModeState::WaveCompleted :
+			TimePassedSinceStart += DeltaSeconds;
+
+			if (TimePassedSinceStart >= WaveCompletedWaitTime)
+			{
+				CurrentWaveCount++;
+
+				if (HasFinishedAllWaves())
+				{
+					SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState::AllWavesDone);
+				}
+				else
+				{
+					TimePassedSinceStart = 0.f;
+
+					SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState::WaitSpawnNewWave);
+					PreLoadNextWaveEnemies();
+				}
+			}
+		break;
+
+		default: break;
 	}
 }
 
@@ -147,10 +149,7 @@ int32 AWarriorSurvivalGameMode::TrySpawnWaveEnemies()
 
 			RandomLocation += FVector(0.f, 0.f, 150.f);
 
-			
-			AWarriorEnemyCharacter* SpawnedEnemy = GetWorld()->SpawnActor<AWarriorEnemyCharacter>(LoadedEnemyClass, RandomLocation, SpawnRotation, SpawnParam);
-
-			if (SpawnedEnemy)
+			if (AWarriorEnemyCharacter* SpawnedEnemy = GetWorld()->SpawnActor<AWarriorEnemyCharacter>(LoadedEnemyClass, RandomLocation, SpawnRotation, SpawnParam))
 			{
 				SpawnedEnemy->OnDestroyed.AddUniqueDynamic(this, &ThisClass::OnEnemyDestroyed);
 				EnemiesSpawnedThisTime++;
